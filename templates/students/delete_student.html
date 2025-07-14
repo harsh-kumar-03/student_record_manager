@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Student - Student Record Manager{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h3><i class="fas fa-exclamation-triangle"></i> Delete Student</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Are you sure?</h4>
+                    <p>You are about to delete the following student record. This action cannot be undone.</p>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-user"></i> {{ student.name }}
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Roll Number:</strong> <code>{{ student.roll_number }}</code></p>
+                                <p><strong>Marks:</strong> 
+                                    <span class="badge bg-{% if student.marks >= 90 %}success{% elif student.marks >= 75 %}warning{% else %}danger{% endif %}">
+                                        {{ student.marks }}%
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Grade:</strong> 
+                                    {% if student.marks >= 90 %}
+                                        <span class="badge bg-success">A+</span>
+                                    {% elif student.marks >= 80 %}
+                                        <span class="badge bg-primary">A</span>
+                                    {% elif student.marks >= 70 %}
+                                        <span class="badge bg-info">B</span>
+                                    {% elif student.marks >= 60 %}
+                                        <span class="badge bg-warning">C</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">F</span>
+                                    {% endif %}
+                                </p>
+                                <p><strong>Added:</strong> {{ student.created_at|date:"M d, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'student_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Yes, Delete Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
